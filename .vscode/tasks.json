@@ -1,0 +1,76 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. [Verilog] Compile",
+      "type": "shell",
+      "command": "iverilog",
+      "args": [
+        "-o",
+        "mysim.vvp",     
+        "testbench.v",    
+        "alu_clean.v",
+        "alu_trojan.v"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/siliconSprint/siliconSprint"
+      },
+      "group": "build"
+    },
+    {
+      "label": "2. [Verilog] Simulate",
+      "type": "shell",
+      "command": "vvp",
+      "args": [
+        "mysim.vvp"       
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/siliconSprint/siliconSprint"
+      },
+      "group": "build",
+      "dependsOn": "1. [Verilog] Compile"
+    },
+    {
+      "label": "3. [Verilog] View Waveform (GTKWave)",
+      "type": "shell",
+      "command": "open_gtkwave.bat",
+      "options": {
+        "cwd": "${workspaceFolder}/siliconSprint/siliconSprint",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/c"]
+        }
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "3b. [Python] View Waveform",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "view_waveform.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/siliconSprint/siliconSprint"
+      },
+      "group": "build",
+      "dependsOn": "2. [Verilog] Simulate",
+      "problemMatcher": ["$python"]
+    },
+    {
+      "label": "4. [Python] Analyze VCD",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "analyze.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/siliconSprint/siliconSprint"
+      },
+      "group": "build",
+      "dependsOn": "2. [Verilog] Simulate",
+      "problemMatcher": ["$python"]
+    }
+  ]
+}
